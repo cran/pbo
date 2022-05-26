@@ -1,7 +1,5 @@
-# unit tests for pbo 
 require(testthat)
 require(pbo)
-require(doParallel)
 
 context("Parallel iteration")
 
@@ -22,12 +20,16 @@ sharpe <- function(x,rf=0.03/252) {
 }
 
 test_that("parallel workers succeed", {
-  require(doParallel)
-  cluster <- makeCluster(2) # or use detectCores()
-  registerDoParallel(cluster)
-  p_pbo <- pbo(m,s,f=sharpe,threshold=1,allow_parallel=TRUE)
-  stopCluster(cluster)
-  expect_true(p_pbo$phi > 0.47 && p_pbo$phi < 0.53)
+  testthat::skip_on_cran()
+  
+  nc <- parallel::detectCores()
+  if ( !is.na(nc)) {
+    cluster <- parallel::makeForkCluster()
+    doParallel::registerDoParallel(cluster)
+    p_pbo <- pbo(m,s,f=sharpe,threshold=1,allow_parallel=TRUE)
+    parallel::stopCluster(cluster)
+    expect_true(p_pbo$phi > 0.47 && p_pbo$phi < 0.53)
+  }
 })
 
 test_that("serial workers succeed", {

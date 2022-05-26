@@ -69,10 +69,10 @@ The package also supports parallel execution on multicore hardware, providing a 
 
 For example, using the `doParallel` package we can establish a multicore cluster and enable multiple workers by passing the above `m` and `s` values along with the argument `allow_parallel=TRUE` to `pbo`as follows:
 
-```{r,echo=TRUE,eval=TRUE}
+```{r,echo=TRUE,eval=FALSE}
 require(doParallel)
 
-cluster <- makeCluster(2) # or use detectCores()
+cluster <- makeCluster(detectCores())
 registerDoParallel(cluster)
 p_pbo <- pbo(m,s=8,f=sharpe,allow_parallel=TRUE)
 stopCluster(cluster)
@@ -82,4 +82,4 @@ summary(p_pbo)
 
 Reference
 ---------
-Bailey, David H. and Borwein, Jonathan M. and Lopez de Prado, Marcos and Zhu, Qiji Jim, "The Probability of Back-Test Overfitting" (September 1, 2013). Available at [SSRN](http://ssrn.com/abstract=2326253 or http://dx.doi.org/10.2139/ssrn.2326253).
+Bailey, David H. and Borwein, Jonathan M. and Lopez de Prado, Marcos and Zhu, Qiji Jim, "The Probability of Back-Test Overfitting" (September 1, 2013). Available at [SSRN](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2326253).

@@ -1,4 +1,4 @@
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 set.seed(765)
 n <- 100
 t <- 2400
@@ -14,7 +14,7 @@ for ( i in 1:n ) {
   m[,i] = m[,i] + mu_base - mean(m[,i]) # re-center
 }
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 sharpe <- function(x,rf=0.03/252) {
   sr <- apply(x,2,function(col) {
     er = col - rf
@@ -23,14 +23,14 @@ sharpe <- function(x,rf=0.03/252) {
   return(sr)
 }
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 require(pbo)
 my_pbo <- pbo(m,s=8,f=sharpe,threshold=0)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 summary(my_pbo)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 require(lattice)
 require(latticeExtra)
 require(grid)
@@ -42,13 +42,13 @@ xyplot(my_pbo,plotType="pairs")
 xyplot(my_pbo,plotType="ranks",ylim=c(0,20))
 dotplot(my_pbo)
 
-## ----,echo=TRUE,eval=TRUE------------------------------------------------
-require(doParallel)
-
-cluster <- makeCluster(2) # or use detectCores()
-registerDoParallel(cluster)
-p_pbo <- pbo(m,s=8,f=sharpe,allow_parallel=TRUE)
-stopCluster(cluster)
-
-summary(p_pbo)
+## ----echo=TRUE,eval=FALSE-----------------------------------------------------
+#  require(doParallel)
+#  
+#  cluster <- makeCluster(detectCores())
+#  registerDoParallel(cluster)
+#  p_pbo <- pbo(m,s=8,f=sharpe,allow_parallel=TRUE)
+#  stopCluster(cluster)
+#  
+#  summary(p_pbo)
 
